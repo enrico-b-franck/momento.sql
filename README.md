@@ -1,341 +1,93 @@
-# momento.sql
+Bem-vindo à base de dados da empresa Momento!
 
-use momento;
--- 1.1 Inserir os meus dados no sistema
-INSERT INTO funcionarios
-(primeiro_nome, sobrenome, email, senha, telefone, data_contratacao, cargo_id, salario, gerente_id, departamento_id)
-VALUES
-('Enrico', 'Bicalho', 'enrico.frack10gmail.com', '123456', '11973296648', CURDATE(), 9, 5000.00, 103, 6);
- 
--- 1.2 Ver quantos funcionarios tem na empresa
+A Momento é uma empresa inovadora do setor de tecnologia e vendas de produtos temáticos de super-heróis e cultura pop. Fundada em 1980, a empresa começou como uma pequena loja em Gotham City e hoje possui escritórios em diversos países, com departamentos especializados em Vendas, Tecnologia, Recursos Humanos, Marketing, Financeiro e Dados.
 
+Nestes exercícios, você vai explorar o banco de dados da empresa e responder perguntas que revelam insights importantes sobre o negócio. Prepare-se para usar queries básicas, agregações complexas, e operações avançadas!
 
-SELECT COUNT(*) AS total_funcionarios
-FROM funcionarios;
- 
--- 1.3 Mostra quantos trabalham por numero
-SELECT COUNT(*) AS total_tecnologia
-FROM funcionarios
-WHERE departamento_id = 6;
- 
--- mostra quantos tem com nomes
-SELECT f.primeiro_nome, f.sobrenome, d.departamento_nome
-FROM funcionarios f
-JOIN departamentos d
-ON f.departamento_id = d.departamento_id
-WHERE d.departamento_nome = 'Tecnologia';
- 
--- 1.4 todos departamentos da empresa
-SELECT * FROM departamentos;
- 
-SELECT COUNT(*) AS total_departamentos
-FROM departamentos;
- 
--- 1.5 total de escritórios
-SELECT COUNT(*) AS total_escritorios
-FROM escritorios;
- 
--- países onde existem escritórios
-SELECT DISTINCT p.pais_nome
-FROM escritorios e
-JOIN paises p
-ON e.pais_id = p.pais_id;
- 
- -- Nível 2: Análise Financeira Básica
+Nível 1: Conhecendo a Empresa
+Seu Primeiro Dia na Momento
+1.1 Você acabou de ser contratado pela Momento! Vamos começar incluindo você no sistema.
 
--- 2.1 Quantos funcionários trabalham no Departamento de Vendas?
-	SELECT COUNT(*) AS 'Departamento de Vendas'
-    FROM funcionarios f
-    JOIN departamentos d
-    ON f.departamento_id = d.departamento_id
-    WHERE d.departamento_nome = 'Vendas';
+1.2 Agora que você faz parte da equipe, quantos funcionários temos ao total na empresa?
 
+1.3 Quantos funcionários trabalham especificamente no Departamento de Tecnologia?
 
+1.4 Liste todos os departamentos que existem na empresa. Quantos são?
 
--- 2.2 Qual é o custo total com salários do Departamento de Vendas?
-SELECT SUM(f.salario) AS custo_total
-FROM funcionarios f 
-JOIN departamentos d
-ON f.departamento_id = d.departamento_id 
-WHERE departamento_nome = 'Vendas';
+1.5 Quantos escritórios a Momento possui? Em quais países?
 
--- 2.3 Qual é a média salarial da empresa, excluindo os cargos de CEO, CMO e CFO?
-SELECT AVG(f.salario) AS media_salarial -- AVG() ->  calcula média
-FROM funcionarios f
-JOIN cargos c 
-  ON f.cargo_id = c.cargo_id
-WHERE c.cargo_nome NOT IN ('CEO', 'CMO', 'CFO'); -- NOT IN -> exclui valores
+Nível 2: Análise Financeira Básica
+O CFO precisa de relatórios urgentes sobre os custos da empresa.
 
+2.1 Quantos funcionários trabalham no Departamento de Vendas?
 
--- 2.4 Qual é a média salarial do Departamento de Tecnologia?
-SELECT AVG(f.salario) AS media_tecnologia
-FROM funcionarios
-WHERE departamento_nome = 'Tecnologia';
+2.2 Qual é o custo total com salários do Departamento de Vendas?
 
+2.3 Qual é a média salarial da empresa, excluindo os cargos de CEO, CMO e CFO?
 
+2.4 Qual é a média salarial do Departamento de Tecnologia?
 
+2.5 Qual departamento possui a maior média salarial?
 
--- 2.5 Qual departamento possui a maior média salarial?
-SELECT departamento, AVG(salario) AS media_salarial
-FROM dados_funcionarios
-GROUP BY departamento
-ORDER BY media_salarial DESC
-LIMIT 1;
--- 2.6 Qual departamento possui o menor número de funcionários?
-SELECT departamento, COUNT(*) AS total_funcionarios
-FROM dados_funcionarios
-GROUP BY departamento
-ORDER BY total_funcionarios ASC
-LIMIT 1;
+2.6 Qual departamento possui o menor número de funcionários?
 
--- Nível 3: Recursos Humanos
--- O RH está fazendo uma análise demográfica da empresa.
+Nível 3: Recursos Humanos
+O RH está fazendo uma análise demográfica da empresa.
 
--- 3.1 Quantos funcionários da empresa Momento possuem cônjuges?
-SELECT COUNT(*) as "Quantidade de funcionários com cônjuges"
-FROM dependentes
-WHERE relacionamento = 'Cônjuge';
+3.1 Quantos funcionários da empresa Momento possuem cônjuges?
 
--- 3.2 Quantos funcionários possuem filhos registrados?
-SELECT COUNT(*) as "Quantidade de funcionários com filhos"
-FROM dependentes
-WHERE relacionamento = 'Filha(o)';
+3.2 Quantos funcionários possuem filhos registrados?
 
--- 3.3 Qual funcionário foi contratado há mais tempo na empresa?
-SELECT primeiro_nome, sobrenome, data_contratacao
-FROM funcionarios
-ORDER BY data_contratacao ASC
-LIMIT 1;
+3.3 Qual funcionário foi contratado há mais tempo na empresa?
 
--- 3.4 Qual funcionário foi contratado há menos tempo na empresa?
-SELECT primeiro_nome, sobrenome, data_contratacao
-FROM funcionarios
-ORDER BY data_contratacao DESC
-LIMIT 1;
+3.4 Qual funcionário foi contratado há menos tempo na empresa?
 
--- 3.5 Liste os 5 funcionários com mais tempo de casa, ordenados pela data de contratação.
-SELECT primeiro_nome, sobrenome, data_contratacao
-FROM funcionarios
-ORDER BY data_contratacao ASC
-LIMIT 5;
+3.5 Liste os 5 funcionários com mais tempo de casa, ordenados pela data de contratação.
 
--- 3.6 Quantos funcionários foram contratados na década de 1990 (entre 1990-1999)?
-SELECT COUNT(*) AS "Funcionário contratados entre 1990-1999"
-FROM funcionarios
-WHERE data_contratacao BETWEEN '1990-01-01' and '1999-12-31';
+3.6 Quantos funcionários foram contratados na década de 1990 (entre 1990-1999)?
 
--- 3.7 Como a média salarial da Momento evoluiu ao longo dos anos? Agrupe por ano de contratação e calcule a média salarial.
-SELECT 
-    YEAR(data_contratacao) AS ano_contratacao, 
-    AVG(salario) AS media_salarial
-FROM funcionarios
-GROUP BY YEAR(data_contratacao)
-ORDER BY ano_contratacao;
+3.7 Como a média salarial da Momento evoluiu ao longo dos anos? Agrupe por ano de contratação e calcule a média salarial.
 
--- Nível 4: Operações e Escritórios
--- 4.1 Qual é o custo total de suprimentos em cada escritório? Ordene do mais caro ao mais barato.
+Nível 4: Operações e Escritórios
+4.1 Qual é o custo total de suprimentos em cada escritório? Ordene do mais caro ao mais barato.
 
-select * from suprimentos;
+4.2 Qual escritório possui a maior quantidade de diferentes tipos de suprimentos?
 
- SELECT escritorio_id,
-       SUM(custo) AS custo_total
-FROM suprimentos
-GROUP BY escritorio_id
-ORDER BY custo_total DESC;
+4.3 Qual é o suprimento mais caro (considerando preço unitário) em toda a empresa?
 
--- 4.2 Qual escritório possui a maior quantidade de diferentes tipos de suprimentos? 
-  SELECT escritorio_id,
-       COUNT(DISTINCT suprimento_nome) AS quantidade_tipos
-FROM suprimentos
-GROUP BY escritorio_id;
+4.4 Calcule o valor total do inventário de suprimentos da empresa (quantidade × preço unitário de todos os itens em todos os escritórios).
 
--- 4.3 Qual é o suprimento mais caro (considerando preço unitário) em toda a empresa?
+Nível 5: Produtos e Vendas
+5.1 Quais produtos foram vendidos pela Momento? Liste todos os produtos únicos.
 
-SELECT suprimento_nome, custo
-FROM suprimentos
-ORDER BY custo DESC
-LIMIT 1;
+5.2 Qual é o produto mais vendido (maior quantidade total)?
 
--- 4.4 Calcule o valor total do inventário de suprimentos da empresa (quantidade × preço unitário de todos os itens em todos os escritórios).
+5.3 Qual é o produto menos vendido?
 
-SELECT *, (quantidade * custo) AS valor_total
-FROM suprimentos;
+5.4 Pensando na relação quantidade × valor unitário, qual produto gerou mais receita para a empresa?
 
--- Nível 5: Produtos e Vendas
+5.5 Qual é o produto mais caro (maior preço unitário) no catálogo?
 
--- 5.1 Quais produtos foram vendidos pela Momento? Liste todos os produtos únicos.
-SELECT DISTINCT p.produto_nome
-FROM vendas v
-JOIN produtos p
-ON v.produto_id = p.produto_id;
+5.6 Qual foi o faturamento total da empresa em vendas?
 
--- 5.2 Qual é o produto mais vendido (maior quantidade total)?
-SELECT p.produto_nome,
-       SUM(v.quantidade_vendida) AS total_vendido
-FROM vendas v
-JOIN produtos p
-ON v.produto_id = p.produto_id
-GROUP BY p.produto_nome
-ORDER BY total_vendido DESC
-LIMIT 1;
+5.7 Quantas vendas foram realizadas no mês de junho de 2023?
 
--- 5.3 Qual é o produto menos vendido?
-SELECT p.produto_nome,
-       SUM(v.quantidade_vendida) AS total_vendido
-FROM vendas v
-JOIN produtos p
-ON v.produto_id = p.produto_id
-GROUP BY p.produto_nome
-ORDER BY total_vendido ASC
-LIMIT 1;
+5.8 Qual vendedor realizou mais vendas (em quantidade de transações)?
 
--- 5.4 Pensando na relação quantidade × valor unitário, qual produto gerou mais receita para a empresa?
-SELECT p.produto_nome,
-       SUM(v.quantidade_vendida * p.produto_price) AS receita_total
-FROM vendas v
-JOIN produtos p
-ON v.produto_id = p.produto_id
-GROUP BY p.produto_nome
-ORDER BY receita_total DESC
-LIMIT 1;
+5.9 Qual vendedor gerou mais receita para a empresa?
 
--- 5.5 Qual é o produto mais caro (maior preço unitário) no catálogo?
+Nível 6: Operações de Atualização
+A empresa está crescendo e mudanças precisam acontecer!
 
-SELECT * from produtos
-ORDER BY produto_price DESC
-LIMIT 1;
+6.1 Um novo departamento foi criado: Inovações. Ele será alocado no escritório "Wayne Offices". Adicione-o ao banco de dados.
 
--- 5.6 Qual foi o faturamento total da empresa em vendas?
+6.2 O departamento de Inovações está sem funcionários. Transfira 2 funcionários do departamento de Tecnologia para Inovações.
 
-SELECT SUM(v.quantidade_vendida * p.produto_price) AS faturamento_total
-FROM vendas v
-JOIN produtos p
-ON v.produto_id = p.produto_id;
+6.3 A empresa decidiu dar um aumento de 10% para todos os funcionários do departamento de Tecnologia. Atualize os salários.
 
--- 5.7 Quantas vendas foram realizadas no mês de junho de 2023?
+6.4 O funcionário "Bruce Ernst" foi promovido a "Senior Web Developer" e recebeu um aumento para $5.000. Atualize suas informações.
 
+6.5 Adicione um novo suprimento ao escritório "Wayne Offices": 15 unidades de "Headsets" com preço unitário de $150 cada.
 
-select * from vendas;
-SELECT COUNT(quantidade_vendida) from vendas as quantidade_vendas
-WHERE venda_data BETWEEN '2023-06-01' and '2023-6-30';
+6.6 Todos os funcionários contratados antes de 1990 estão aposentando. Remova-os do banco de dados (CUIDADO: execute um SELECT antes para ver quantos serão afetados!).
 
--- 5.8 Qual vendedor realizou mais vendas (em quantidade de transações)?
-SELECT funcionario_id,
-       COUNT(*) AS total_vendas
-FROM vendas
-GROUP BY funcionario_id
-ORDER BY total_vendas DESC
-LIMIT 1;
-
--- 5.9 Qual vendedor gerou mais receita para a empresa?
-SELECT v.funcionario_id,
-       SUM(v.quantidade_vendida * p.produto_price) AS receita_total
-FROM vendas v
-JOIN produtos p
-ON v.produto_id = p.produto_id
-GROUP BY v.funcionario_id
-ORDER BY receita_total DESC
-LIMIT 1;
-
--- Nível 6: Operações de Atualização
--- 6.1 Um novo departamento foi criado: Inovações. Ele será alocado no escritório "Wayne Offices". Adicione-o ao banco de dados.
-INSERT INTO departamentos(departamento_id,departamento_nome,escritorio_id) VALUES (14,'Inovações',1400);
- 
--- 6.2 O departamento de Inovações está sem funcionários. Transfira 2 funcionários do departamento de Tecnologia para Inovações.
- 
--- verificando os funcionários da tecnologia
-SELECT funcionario_id, primeiro_nome, sobrenome, cargo_id, salario
-FROM funcionarios
-WHERE departamento_id = 6;
- 
--- depois de escolher os 2 azarados vamos atualizar a tabela
-UPDATE funcionarios
-SET departamento_id = (SELECT departamento_id FROM departamentos WHERE departamento_nome = 'Inovações')
-WHERE funcionario_id IN (105, 107)  -- David Austin e Diana Lorentz
-  AND departamento_id = 6; -- só para ter certeza de que não vai mudar outra pessoa ou alguem que ja tenha sido transferida (Gabau, vc deve um chocolate para todos da JURIKI)
-  -- bora ver se deu certo ou se deu ruim
-  SELECT f.funcionario_id, f.primeiro_nome, f.sobrenome, d.departamento_nome
-FROM funcionarios f
-JOIN departamentos d ON f.departamento_id = d.departamento_id
-WHERE f.funcionario_id IN (105, 107);
- 
--- 6.3 A empresa decidiu dar um aumento de 10% para todos os funcionários do departamento de Tecnologia. Atualize os salários.
-UPDATE funcionarios SET salario = salario*1.1 WHERE departamento_id = 6;
- 
--- 6.4 O funcionário "Bruce Ernst" foi promovido a "Senior Web Developer" e recebeu um aumento para $5.000. Atualize suas informações.
- 
- 
--- adiconar o novo cargo pq não tem né
-INSERT INTO cargos (cargo_nome, min_salario, max_salario)
-VALUES ('Senior Web Developer', 5000.00, 15000.00);
- 
--- atualizar cargo e salário do Bruce Ernst pq o bichinho merece
-UPDATE funcionarios
-SET cargo_id = (SELECT cargo_id FROM cargos WHERE cargo_nome = 'Senior Web Developer'),
-    salario  = 5000.00
-WHERE funcionario_id = 104;
- 
--- verificar para ver se não deu ruim
- 
-SELECT f.funcionario_id, f.primeiro_nome, f.sobrenome,
-       c.cargo_nome, f.salario
-FROM funcionarios f
-JOIN cargos c ON f.cargo_id = c.cargo_id
-WHERE f.funcionario_id = 104;
- 
- 
--- Todos os funcionários contratados antes de 1990 estão aposentando. 
--- Remova-os do banco de dados (CUIDADO: execute um SELECT antes para ver quantos serão afetados!).
- 
--- 1- SELECT para ver quem será afetado ANTES de deletar para ter uma noção
-SELECT funcionario_id, primeiro_nome, sobrenome,
-       email, data_contratacao
-FROM funcionarios
-WHERE data_contratacao < '1990-01-01';
- 
- 
--- 2- remover dependentes vinculados (FK exige isso primeiro) maldita chave gringa.
- 
-DELETE FROM dependentes
-WHERE funcionario_id IN (
-    SELECT funcionario_id FROM funcionarios
-    WHERE data_contratacao < '1990-01-01'
-    );
-    --  3- remover registros do audit_log vinculados (NÃO FAZ SENTIDO TER UM PEDIDO OU ALGUMA SOLICITAÇÃO DO FUNCIONARIO QUE ESTÁ APOSENTADO)
-DELETE FROM audit_log
-WHERE funcionario_id IN (
-    SELECT funcionario_id FROM funcionarios
-    WHERE data_contratacao < '1990-01-01'
-);
- 
--- 4- verificar quem tem esses funcionários como gerente
- 
-SELECT funcionario_id, primeiro_nome, sobrenome, gerente_id
-FROM funcionarios
-WHERE gerente_id IN (
-    SELECT funcionario_id FROM funcionarios
-    WHERE data_contratacao < '1990-01-01'
-    );
-    -- PASSO 5- remover a referência de gerente (setar NULL) 
-UPDATE funcionarios
-SET gerente_id = NULL
-WHERE gerente_id IN (
-    SELECT funcionario_id FROM (
-        SELECT funcionario_id FROM funcionarios
-        WHERE data_contratacao < '1990-01-01'
-    ) AS aposentados
-);
- 
--- PASSO 6: agora sim, bora colocar os idosos no modo economia de bateria
-DELETE FROM funcionarios
-WHERE data_contratacao < '1990-01-01';
- 
- 
--- Verificação de aposentadoria
-SELECT funcionario_id, primeiro_nome, sobrenome, data_contratacao
-FROM funcionarios
-WHERE data_contratacao < '1990-01-01';
- 
- 
--- 6.5 Adicione um novo suprimento ao escritório "Wayne Offices (id 1400)": 15 unidades de "Headsets" com preço unitário de $150 cada.
-INSERT INTO suprimentos (suprimento_nome,quantidade_comprada,custo,escritorio_id) VALUES ('Headsets', 15, 2250.00, 1400);
